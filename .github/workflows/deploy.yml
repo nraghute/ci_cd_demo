@@ -20,7 +20,9 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Start FastAPI app
+      - name: Start FastAPI app (CMD shell)
         run: |
           venv\Scripts\activate
           start /B uvicorn app.main:app --host 0.0.0.0 --port 8000
+        shell: cmd
+
