@@ -19,11 +19,10 @@ jobs:
           venv\Scripts\activate
           pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Start FastAPI app (CMD shell)
+
+      - name: Run FastAPI app and wait
         run: |
           venv\Scripts\activate
-          start /B uvicorn app.main:app --host 0.0.0.0 --port 8000
+          start /MIN cmd /C "uvicorn app.main:app --host 127.0.0.1 --port 8000"
+          timeout /T 300
         shell: cmd
-
-      - name: Keep runner alive for 5 minutes
-        run: powershell -Command "Start-Sleep -Seconds 300"
