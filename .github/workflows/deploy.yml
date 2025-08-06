@@ -1,4 +1,4 @@
-name: Local Deploy CI/CD
+name: FastAPI CI/CD (Local Runner)
 
 on:
   push:
@@ -6,18 +6,30 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted  # 🧠 Uses your self-hosted runner
+    runs-on: self-hosted  # Matches your Windows runner
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install Python dependencies
-        run: |
-          python -m venv venv
-          venv\Scripts\activate
-          pip install -r requirements.txt
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-      - name: Run FastAPI app
+      - name: Install dependencies
         run: |
-          uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+          python -m pip install --upgrade pip
+          pip install fastapi uvicorn
+
+      - name: Run FastAPI app (background)
+        shell: cmd
+        run: |
+          cd app
+          start /B uvicorn main:app --host 0.0.0.0 --port 8000
+
+      - name: Confirm it's running
+        shell: cmd
+        run: |
+          timeout /T 5
+          curl http://localhost:8000
