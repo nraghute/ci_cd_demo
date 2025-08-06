@@ -27,3 +27,6 @@ jobs:
 
       - name: Keep runner alive for 5 minutes
         run: powershell -Command "Start-Sleep -Seconds 300"
+
+      - name: Keep runner alive for 5 minutes
+        run: powershell -Command "Start-Sleep -Seconds 300"
