@@ -15,7 +15,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           python -m venv venv
-          source venv/bin/activate  # use `venv\Scripts\activate` on Windows
+          venv\Scripts\activate
           pip install -r requirements.txt
 
       - name: Run FastAPI app
