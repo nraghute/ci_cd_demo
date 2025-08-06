@@ -1,28 +1,26 @@
-name: Start FastAPI App
+name: Run FastAPI Locally on Self-Hosted Runner
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
-  run-fastapi:
-    runs-on: self-hosted  # Your local Windows runner
-
+  run-local:
+    runs-on: self-hosted
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up virtual environment
         run: |
           python -m venv venv
           venv\Scripts\activate
-          pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Start FastAPI app (CMD shell)
-        run: |
-          venv\Scripts\activate
-          start /B uvicorn app.main:app --host 0.0.0.0 --port 8000
         shell: cmd
 
+      - name: Start FastAPI app in background
+        run: |
+          start /B venv\Scripts\uvicorn.exe app.main:app --host 0.0.0.0 --port 8000
+        shell: cmd
+
+      - name: Keep runner alive for 5 minutes
+        run: powershell -Command "Start-Sleep -Seconds 300"
