@@ -19,21 +19,3 @@ jobs:
           venv\Scripts\activate
           pip install --upgrade pip
           pip install -r requirements.txt
-
-      # - name: Run FastAPI app and wait
-      #   run: |
-      #     venv\Scripts\activate
-      #     start /MIN cmd /C "uvicorn app.main:app --host 127.0.0.1 --port 8000"
-      #     timeout /T 300
-      #   shell: cmd
-
-      - name: Kill existing app
-        shell: pwsh
-        run: |
-          taskkill /F /IM uvicorn.exe || echo "App not running"
-      
-      - name: Start FastAPI App in background
-        shell: pwsh
-        run: |
-          Start-Process -NoNewWindow -FilePath "python" -ArgumentList "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"
-  
